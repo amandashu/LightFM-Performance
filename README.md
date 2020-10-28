@@ -6,19 +6,19 @@ This repository contains code for our DSC180 replication project of the LightFM 
 The data used is the [Movielens 100k dataset](https://grouplens.org/datasets/movielens/100k/). 
 
 See [here](http://files.grouplens.org/datasets/movielens/ml-100k-README.txt) for a detailed description of the data. We use the files:
-- ua.base
-- ua.test
-- u.item
-- u.user
+- ua.base: training data
+- ua.test: testing data
+- u.item: item info
+- u.user: user info
 
 ## Code Organization
 
-**Configuration**
+#### Configuration
 The "config" folder contains two json files:
 - analysis-params.json: contains parameters that are passed into analysis.py
 - data-params.json: contains parameters that are passed into etl.py
 
-**Source**
+#### Source
 The "src" folder contains subfolders "analysis" and "data".
 
 In the "src/analysis" folder:
