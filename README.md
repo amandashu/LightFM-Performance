@@ -19,13 +19,15 @@ The "config" folder contains two json files:
 - data-params.json: contains parameters that are passed into the get_data function in etl.py
 
 #### Source
-The "src" folder contains subfolders "analysis" and "data".
+The "src" folder contains subfolders "data", "analysis", and "models".
+
+In the "src/data" folder:
+- etl.py: contains the function "get_data" that reads in the MovieLens data and outputs training and testing user/item interaction matrixes
 
 In the "src/analysis" folder:
 - analysis.py: contains the function "run_analysis" to run the results of lightfm and baseline algorithms on given inputted data
 
-In the "src/data" folder:
-- etl.py: contains the function "get_data" that reads in the MovieLens data and outputs training and testing user/item interaction matrixes
+The "src/models" folder (in progress) contains baseline algorithms code.
 
 ## Run the Results
 Run this command to get results:
