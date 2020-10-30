@@ -1,7 +1,7 @@
 import numpy as np
-from Base.DataIO import DataIO
+from src.models.Base.DataIO import DataIO
 import os
-from Base.Recommender_utils import check_matrix
+from src.models.Base.Recommender_utils import check_matrix
 
 
 class BaseRecommender(object):

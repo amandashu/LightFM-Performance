@@ -3,9 +3,9 @@ import scipy.sparse as sps
 import time, sys, copy
 
 from enum import Enum
-from Utils.seconds_to_biggest_unit import seconds_to_biggest_unit
+from src.models.Utils.seconds_to_biggest_unit import seconds_to_biggest_unit
 
-from Base.Evaluation.metrics import roc_auc, precision, precision_recall_min_denominator, recall, MAP, MRR, ndcg, arhr, RMSE, \
+from src.models.Base.Evaluation.metrics import roc_auc, precision, precision_recall_min_denominator, recall, MAP, MRR, ndcg, arhr, RMSE, \
     Novelty, Coverage_Item, _Metrics_Object, Coverage_User, Gini_Diversity, Shannon_Entropy, Diversity_MeanInterList, Diversity_Herfindahl, AveragePopularity
 
 
