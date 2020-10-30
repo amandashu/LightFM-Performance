@@ -5,6 +5,8 @@ from scipy.sparse import coo_matrix
 num_items = 1682
 num_users = 943
 
+#from src.data.Movielens100KReader import Movielens100KReader
+
 def user_item_interactions(path):
     df = pd.read_csv(path,'\t', names=['user id','item id','rating','timestamp'])
     df = df[df['rating']==5] # DELETE THIS
@@ -40,4 +42,6 @@ def get_data(**kwargs):
     dct = {}
     dct['train'] = user_item_interactions(kwargs['train_path'])
     dct['test'] = user_item_interactions(kwargs['test_path'])
+    #data_reader = Movielens1MReader()
+    #loaded_dataset = data_reader.load_data()
     return dct

@@ -1,4 +1,4 @@
 {
-  "train_path":"./data/ua.base",
-  "test_path":"./data/ua.test"
+  "train_path":"/teams/DSC180A_FA20_A00/a06recommendersystems/group07_data/ua.base",
+  "test_path":"/teams/DSC180A_FA20_A00/a06recommendersystems/group07_data/ua.test"
 }
