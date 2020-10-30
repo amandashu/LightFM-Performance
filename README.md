@@ -15,8 +15,8 @@ See [here](http://files.grouplens.org/datasets/movielens/ml-100k-README.txt) for
 
 #### Configuration
 The "config" folder contains two json files:
-- analysis-params.json: contains parameters that are passed into analysis.py
-- data-params.json: contains parameters that are passed into etl.py
+- analysis-params.json: contains parameters that are passed into the run_analysis function in analysis.py
+- data-params.json: contains parameters that are passed into the get_data function in etl.py
 
 #### Source
 The "src" folder contains subfolders "analysis" and "data".
@@ -32,3 +32,7 @@ Run this command to get results:
 ```console
 python run.py data analysis
 ```
+## Contributions
+Checkpoint 1:
+- Amanda: data ingestion pipeline
+- Sarat: introduction
