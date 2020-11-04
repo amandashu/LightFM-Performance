@@ -42,8 +42,8 @@ from scipy.sparse import csr_matrix
 # print("Result of TopPop is:\n" + results_run_string)
 
 def run_toppop(data):
-    test_data = csr_matrix(data['test'])
     train_data = csr_matrix(data['train'])
+    test_data = csr_matrix(data['test'])
 
     evaluator_test = EvaluatorHoldout(test_data, cutoff_list=[5, 10, 20], exclude_seen=False)
 
