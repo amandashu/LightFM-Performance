@@ -17,7 +17,7 @@ LABEL maintainer="UC San Diego ITS/ETS <ets-consult@ucsd.edu>"
 USER root
 
 # 3) install packages
-RUN pip install --no-cache-dir networkx scipy python-louvain pandas numpy lightfm
+RUN pip install --no-cache-dir networkx scipy python-louvain pandas numpy lightfm sklearn
 
 # 4) change back to notebook user
 # COPY /run_jupyter.sh /

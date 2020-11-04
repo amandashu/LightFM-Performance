@@ -1,5 +1,5 @@
-from Base.BaseRecommender import BaseRecommender
-from Base.DataIO import DataIO
+from src.models.Base.BaseRecommender import BaseRecommender
+from src.models.Base.DataIO import DataIO
 import numpy as np
 
 

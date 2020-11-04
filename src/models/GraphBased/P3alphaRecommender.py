@@ -2,9 +2,9 @@ import numpy as np
 import scipy.sparse as sps
 
 from sklearn.preprocessing import normalize
-from Base.Recommender_utils import check_matrix, similarityMatrixTopK
+from src.models.Base.Recommender_utils import check_matrix, similarityMatrixTopK
 
-from Base.BaseSimilarityMatrixRecommender import BaseItemSimilarityMatrixRecommender
+from src.models.Base.BaseSimilarityMatrixRecommender import BaseItemSimilarityMatrixRecommender
 import time, sys
 
 
