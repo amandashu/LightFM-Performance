@@ -16,8 +16,15 @@ def main(targets):
     `main` runs the targets in order of data=>analysis.
     '''
 
-    if 'data' in targets:
-        with open('config/data-params.json') as fh:
+    if 'data-local' in targets:
+        with open('config/data-local-params.json') as fh:
+            data_cfg = json.load(fh)
+
+        # make the data target
+        data = get_data(**data_cfg)
+
+    if 'data-dsmlp' in targets:
+        with open('config/data-dsmlp-params.json') as fh:
             data_cfg = json.load(fh)
 
         # make the data target
