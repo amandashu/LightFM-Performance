@@ -8,9 +8,9 @@ import numpy as np
 import scipy.sparse as sps
 
 from sklearn.preprocessing import normalize
-from Base.Recommender_utils import check_matrix, similarityMatrixTopK
+from src.models.Base.Recommender_utils import check_matrix, similarityMatrixTopK
 
-from Base.BaseSimilarityMatrixRecommender import BaseItemSimilarityMatrixRecommender
+from src.models.Base.BaseSimilarityMatrixRecommender import BaseItemSimilarityMatrixRecommender
 import time, sys
 
 class RP3betaRecommender(BaseItemSimilarityMatrixRecommender):
@@ -36,7 +36,7 @@ class RP3betaRecommender(BaseItemSimilarityMatrixRecommender):
         self.implicit = implicit
         self.normalize_similarity = normalize_similarity
 
-        
+
         # if X.dtype != np.float32:
         #     print("RP3beta fit: For memory usage reasons, we suggest to use np.float32 as dtype for the dataset")
 

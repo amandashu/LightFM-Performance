@@ -1,4 +1,3 @@
-#from lightfm.datasets import fetch_movielens
 from lightfm import LightFM
 from lightfm.evaluation import precision_at_k
 from scipy.sparse import coo_matrix
