@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-from scipy.sparse import coo_matrix
 
 num_items = 1682
 num_users = 943
@@ -13,7 +12,7 @@ def user_item_interactions(path):
     df_piv = df.pivot(index='user id',columns='item id',values='rating')
     cols = list(df_piv.columns)
     rows = list(df_piv.index)
-    
+
     # fill in missing items
     missing_items = []
     for i in np.arange(1,num_items+1):
@@ -25,7 +24,7 @@ def user_item_interactions(path):
     for i in np.arange(1,num_users+1):
         if i not in rows:
             missing_users.append(i)
-    
+
     # empty columns for missing items
     for i in missing_items:
         df_piv[i] = np.NaN
@@ -35,8 +34,8 @@ def user_item_interactions(path):
     df_piv = df_piv.append(pd.DataFrame(index=missing_users,columns=list(np.arange(1,num_items+1))))
     df_piv = df_piv.sort_index() # sort
     df_piv = df_piv.fillna(0)
-    
-    return coo_matrix(df_piv.to_numpy())
+
+    return df_piv.to_numpy()
 
 def get_data(**kwargs):
     dct = {}
