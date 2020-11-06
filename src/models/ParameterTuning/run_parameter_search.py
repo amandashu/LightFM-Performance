@@ -734,7 +734,6 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
 
 
 
-
     except Exception as e:
 
         print("On recommender {} Exception {}".format(recommender_class, str(e)))
