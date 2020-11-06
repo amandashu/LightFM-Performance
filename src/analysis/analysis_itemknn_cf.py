@@ -37,11 +37,11 @@ def run_itemknn_cf(data):
                                                        n_cases = 35,
                                                        n_random_starts = 5)
     
-    try:
-        runParameterSearch_Collaborative_partial('Item')
-    except Exception as e:
-        print("On recommender {} Exception {}".format(ItemKNNCFRecommender, str(e)))
-        traceback.print_exc()
+    #try:
+        #runParameterSearch_Collaborative_partial('Item')
+    #except Exception as e:
+        #print("On recommender {} Exception {}".format(ItemKNNCFRecommender, str(e)))
+        #traceback.print_exc()
             
     results_dict, results_run_string = evaluator_test.evaluateRecommender(recommender)
     print("Result of itemknn_cf is:\n" + results_run_string)
