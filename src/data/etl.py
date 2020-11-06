@@ -41,6 +41,5 @@ def get_data(**kwargs):
     dct = {}
     dct['train'] = user_item_interactions(kwargs['train_path'])
     dct['test'] = user_item_interactions(kwargs['test_path'])
-    #data_reader = Movielens1MReader()
     #loaded_dataset = data_reader.load_data()
     return dct
