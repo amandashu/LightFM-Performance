@@ -406,7 +406,7 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
 
 
 
-        if recommender_class in [TopPop, GlobalEffects, Random]:
+        if recommender_class in [TopPop]:
             """
             TopPop, GlobalEffects and Random have no parameters therefore only one evaluation is needed
             """
@@ -727,8 +727,8 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
                                resume_from_saved = resume_from_saved,
                                save_model = save_model,
                                evaluate_on_test = evaluate_on_test,
-                               output_folder_path = output_folder_path,
-                               output_file_name_root = output_file_name_root,
+                               output_folder_path = None,
+                               output_file_name_root = None,
                                metric_to_optimize = metric_to_optimize,
                                recommender_input_args_last_test = recommender_input_args_last_test)
 
@@ -740,8 +740,8 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
         print("On recommender {} Exception {}".format(recommender_class, str(e)))
         traceback.print_exc()
 
-        error_file = open(output_folder_path + "ErrorLog.txt", "a")
-        error_file.write("On recommender {} Exception {}\n".format(recommender_class, str(e)))
-        error_file.close()
+        #error_file = open(output_folder_path + "ErrorLog.txt", "a")
+        #error_file.write("On recommender {} Exception {}\n".format(recommender_class, str(e)))
+        #error_file.close()
 
 
