@@ -29,7 +29,7 @@ In the "src/analysis" folder:
 - analysis.py: contains the function "run_analysis" to run the results of lightfm and baseline algorithms
 - All other files starting with "analysis_" contain a function that runs their respective algorithm
 
-The "src/models" folder contains baseline algorithms and evaluation code, taken from a [repository](https://github.com/MaurizioFD/RecSys2019_DeepLearning_Evaluation), an author of "Are we Making Much Progess? A Worrying Analysis of Recent Neural Recommendation Approaches".
+The "src/models" folder contains baseline algorithms and evaluation code, taken from this [repository](https://github.com/MaurizioFD/RecSys2019_DeepLearning_Evaluation) by Dacrema, an author of "Are we Making Much Progress? A Worrying Analysis of Recent Neural Recommendation Approaches".
 
 ## Run the Results
 On DSMLP, run this command to get results:

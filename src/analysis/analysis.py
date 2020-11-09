@@ -13,11 +13,11 @@ def run_analysis(data, **kwargs):
 
     #run itemknn cf
     print('\nRun itemknn cf')
-    run_itemknn_cf(data)
+    #run_itemknn_cf(data)
 
     #run userknn cf
     print('\nRun userknn cf')
-    #run_userknn_cf(data)
+    run_userknn_cf(data)
 
     # run p3alpha
     print('\nRun p3alpha')
@@ -25,7 +25,7 @@ def run_analysis(data, **kwargs):
 
     # run rp3beta
     print('\nRun rp3beta')
-    #run_rp3beta(data)
+    run_rp3beta(data)
 
     # run lightfm
     print('\nRun lightfm')
