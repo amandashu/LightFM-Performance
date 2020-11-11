@@ -1,6 +1,7 @@
 from lightfm import LightFM
 from lightfm.evaluation import precision_at_k
 from scipy.sparse import coo_matrix
+from sklearn.model_selection import GridSearchCV
 
 def run_lightfm(data, **kwargs):
     # add tuning with kwargs

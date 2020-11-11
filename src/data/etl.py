@@ -1,11 +1,16 @@
 import pandas as pd
 import numpy as np
+from sklearn.model_selection import train_test_split
 
 num_items = 1682
 num_users = 943
 
-def user_item_interactions(path, min_rating):
-    df = pd.read_csv(path,'\t', names=['user id','item id','rating','timestamp'])
+def read_datafiles(train_path, test_path):
+    train_df = pd.read_csv(train_path,'\t', names=['user id','item id','rating','timestamp'])
+    test_df = pd.read_csv(test_path,'\t', names=['user id','item id','rating','timestamp'])
+    return train_df, test_df
+
+def user_item_interactions(df, min_rating):
     df = df[df['rating']>=min_rating]
     df_piv = df.pivot(index='user id',columns='item id',values='rating')
     cols = list(df_piv.columns)
@@ -36,7 +41,15 @@ def user_item_interactions(path, min_rating):
     return df_piv.to_numpy()
 
 def get_data(**kwargs):
+    train_df, test_df = read_datafiles(kwargs['train_path'], kwargs['test_path'])
+
+    # split the training to its own training and validation set
+    train_smalldf, validation_df = train_test_split(train_df, test_size=0.1)
+
     dct = {}
-    dct['train'] = user_item_interactions(kwargs['train_path'], kwargs['min_rating'])
-    dct['test'] = user_item_interactions(kwargs['test_path'], kwargs['min_rating'])
+    mr = kwargs['min_rating']
+    dct['train'] = user_item_interactions(train_df, mr)
+    dct['test'] = user_item_interactions(test_df, mr)
+    dct['train_small'] = user_item_interactions(train_smalldf, mr)
+    dct['validation'] = user_item_interactions(validation_df, mr)
     return dct

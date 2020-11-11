@@ -7,21 +7,16 @@ from src.models.ParameterTuning.run_parameter_search import runParameterSearch_C
 
 
 def run_rp3beta(data, metric_to_optimize, cutoffs):
-    # get train, test data in sparse matrices
-    train_data = csr_matrix(data['train'])
-    test_data = csr_matrix(data['test'])
+    # get data in sparse matrices
+    for key in data:
+        data[key] = csr_matrix(data[key])
 
-    # create validation data
-    index = np.arange(np.shape(data['train'])[0])
-    np.random.shuffle(index)
-    validation_data = csr_matrix(data['train'][index, :])
-
-    # tune baselines, optimizing precision
-    evaluator_validation = EvaluatorHoldout(validation_data, cutoff_list=cutoffs, exclude_seen=False)
-    evaluator_test = EvaluatorHoldout(test_data, cutoff_list=cutoffs, exclude_seen=False)
+    # get results of tuned baseline
+    evaluator_validation = EvaluatorHoldout(data['validation'], cutoff_list=cutoffs, exclude_seen=False)
+    evaluator_test = EvaluatorHoldout(data['test'], cutoff_list=cutoffs, exclude_seen=False)
 
     runParameterSearch_Collaborative_partial = partial(runParameterSearch_Collaborative,
-                                                       URM_train = train_data,
+                                                       URM_train = data['train_small'],
                                                        URM_train_last_test = None,
                                                        metric_to_optimize = metric_to_optimize,
                                                        evaluator_validation_earlystopping = evaluator_validation,
@@ -40,7 +35,7 @@ def run_rp3beta(data, metric_to_optimize, cutoffs):
         traceback.print_exc()
 
     # get test results without tuning
-    recommender = RP3betaRecommender(train_data)
+    recommender = RP3betaRecommender(data['train'])
     recommender.fit()
     results_dict, results_run_string = evaluator_test.evaluateRecommender(recommender)
     print("Result of rp3beta is:\n" + results_run_string)
