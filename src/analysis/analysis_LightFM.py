@@ -2,7 +2,10 @@ from lightfm import LightFM
 from lightfm.evaluation import precision_at_k
 from scipy.sparse import coo_matrix
 
-def run_lightfm(data):
+def run_lightfm(data, **kwargs):
+    # add tuning with kwargs
+    print(kwargs)
+
     train_data = coo_matrix(data['train'])
     test_data = coo_matrix(data['test'])
 

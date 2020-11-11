@@ -4,11 +4,9 @@ import numpy as np
 num_items = 1682
 num_users = 943
 
-#from src.data.Movielens100KReader import Movielens100KReader
-
-def user_item_interactions(path):
+def user_item_interactions(path, min_rating):
     df = pd.read_csv(path,'\t', names=['user id','item id','rating','timestamp'])
-    df = df[df['rating']==5] # DELETE THIS
+    df = df[df['rating']>=min_rating]
     df_piv = df.pivot(index='user id',columns='item id',values='rating')
     cols = list(df_piv.columns)
     rows = list(df_piv.index)
@@ -39,7 +37,6 @@ def user_item_interactions(path):
 
 def get_data(**kwargs):
     dct = {}
-    dct['train'] = user_item_interactions(kwargs['train_path'])
-    dct['test'] = user_item_interactions(kwargs['test_path'])
-    #loaded_dataset = data_reader.load_data()
+    dct['train'] = user_item_interactions(kwargs['train_path'], kwargs['min_rating'])
+    dct['test'] = user_item_interactions(kwargs['test_path'], kwargs['min_rating'])
     return dct

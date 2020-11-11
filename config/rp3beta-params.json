@@ -1,0 +1,4 @@
+{
+  "metric_to_optimize": "PRECISION",
+  "cutoffs" : [5,10,20]
+}

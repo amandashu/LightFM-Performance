@@ -6,7 +6,7 @@ from src.models.GraphBased.RP3betaRecommender import RP3betaRecommender
 from src.models.ParameterTuning.run_parameter_search import runParameterSearch_Collaborative
 
 
-def run_rp3beta(data):
+def run_rp3beta(data, metric_to_optimize, cutoffs):
     # get train, test data in sparse matrices
     train_data = csr_matrix(data['train'])
     test_data = csr_matrix(data['test'])
@@ -17,10 +17,9 @@ def run_rp3beta(data):
     validation_data = csr_matrix(data['train'][index, :])
 
     # tune baselines, optimizing precision
-    evaluator_validation = EvaluatorHoldout(validation_data, cutoff_list=[5, 10, 20], exclude_seen=False)
-    evaluator_test = EvaluatorHoldout(test_data, cutoff_list=[5, 10, 20], exclude_seen=False)
+    evaluator_validation = EvaluatorHoldout(validation_data, cutoff_list=cutoffs, exclude_seen=False)
+    evaluator_test = EvaluatorHoldout(test_data, cutoff_list=cutoffs, exclude_seen=False)
 
-    metric_to_optimize = 'PRECISION'
     runParameterSearch_Collaborative_partial = partial(runParameterSearch_Collaborative,
                                                        URM_train = train_data,
                                                        URM_train_last_test = None,
@@ -40,8 +39,8 @@ def run_rp3beta(data):
         print("On recommender {} Exception {}".format(RP3betaRecommender, str(e)))
         traceback.print_exc()
 
-    # get test results without tuning    
+    # get test results without tuning
     recommender = RP3betaRecommender(train_data)
-    recommender.fit(alpha=1., beta=0.6)
+    recommender.fit()
     results_dict, results_run_string = evaluator_test.evaluateRecommender(recommender)
     print("Result of rp3beta is:\n" + results_run_string)

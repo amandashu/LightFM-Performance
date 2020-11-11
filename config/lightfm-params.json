@@ -1,0 +1,5 @@
+{
+  "no_components": [5, 10, 15],
+  "learning_schedule": ["adagrad","adadelta"],
+  "max_sampled" : [10, 25]
+}

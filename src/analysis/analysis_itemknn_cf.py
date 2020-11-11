@@ -5,7 +5,7 @@ from src.models.Base.Evaluation.Evaluator import EvaluatorHoldout
 from src.models.KNN.ItemKNNCFRecommender import ItemKNNCFRecommender
 from src.models.ParameterTuning.run_parameter_search import runParameterSearch_Collaborative
 
-def run_itemknn_cf(data):
+def run_itemknn_cf(data, metric_to_optimize, cutoffs):
     # get train, test data in sparse matrices
     train_data = csr_matrix(data['train'])
     test_data = csr_matrix(data['test'])
@@ -16,10 +16,9 @@ def run_itemknn_cf(data):
     validation_data = csr_matrix(data['train'][index, :])
 
     # tune baselines, optimizing precision
-    evaluator_validation = EvaluatorHoldout(validation_data, cutoff_list=[5, 10, 20], exclude_seen=False)
-    evaluator_test = EvaluatorHoldout(test_data, cutoff_list=[5, 10, 20], exclude_seen=False)
+    evaluator_validation = EvaluatorHoldout(validation_data, cutoff_list=cutoffs, exclude_seen=False)
+    evaluator_test = EvaluatorHoldout(test_data, cutoff_list=cutoffs, exclude_seen=False)
 
-    metric_to_optimize = 'PRECISION'
     runParameterSearch_Collaborative_partial = partial(runParameterSearch_Collaborative,
                                                        URM_train = train_data,
                                                        URM_train_last_test = None,
@@ -39,7 +38,7 @@ def run_itemknn_cf(data):
         print("On recommender {} Exception {}".format(ItemKNNCFRecommender, str(e)))
         traceback.print_exc()
 
-    # get test results without tuning 
+    # get test results without tuning
     recommender = ItemKNNCFRecommender(train_data)
     recommender.fit()
     results_dict, results_run_string = evaluator_test.evaluateRecommender(recommender)

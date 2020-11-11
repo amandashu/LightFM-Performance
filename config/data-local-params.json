@@ -1,4 +1,5 @@
 {
   "train_path":"data/ua.base",
-  "test_path":"data/ua.test"
+  "test_path":"data/ua.test",
+  "min_rating": 5
 }

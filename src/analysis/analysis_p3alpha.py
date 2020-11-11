@@ -5,7 +5,7 @@ from src.models.Base.Evaluation.Evaluator import EvaluatorHoldout
 from src.models.GraphBased.P3alphaRecommender import P3alphaRecommender
 from src.models.ParameterTuning.run_parameter_search import runParameterSearch_Collaborative
 
-def run_p3alpha(data):
+def run_p3alpha(data, metric_to_optimize, cutoffs):
     # get train, test data in sparse matrices
     train_data = csr_matrix(data['train'])
     test_data = csr_matrix(data['test'])
@@ -16,10 +16,9 @@ def run_p3alpha(data):
     validation_data = csr_matrix(data['train'][index, :])
 
     # tune baselines, optimizing precision
-    evaluator_validation = EvaluatorHoldout(validation_data, cutoff_list=[5, 10, 20], exclude_seen=False)
-    evaluator_test = EvaluatorHoldout(test_data, cutoff_list=[5, 10, 20], exclude_seen=False)
+    evaluator_validation = EvaluatorHoldout(validation_data, cutoff_list=cutoffs, exclude_seen=False)
+    evaluator_test = EvaluatorHoldout(test_data, cutoff_list=cutoffs, exclude_seen=False)
 
-    metric_to_optimize = 'PRECISION'
     runParameterSearch_Collaborative_partial = partial(runParameterSearch_Collaborative,
                                                        URM_train = train_data,
                                                        URM_train_last_test = None,
