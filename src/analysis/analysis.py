@@ -6,6 +6,7 @@ from analysis_rp3beta import run_rp3beta
 from analysis_LightFM import run_lightfm
 
 def run_analysis(data, config_dct):
+    
     # run top popular
     print('\nRun top popular')
     run_toppop(data, **config_dct['toppop'])
@@ -25,9 +26,8 @@ def run_analysis(data, config_dct):
     # run rp3beta
     print('\nRun rp3beta')
     run_rp3beta(data, **config_dct['rp3beta'])
-
+        
     # run lightfm
     print('\nRun lightfm')
     run_lightfm(data, **config_dct['lightfm'])
-
     return None

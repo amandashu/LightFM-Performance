@@ -356,7 +356,7 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
                                      n_cases = 35, n_random_starts = 5, resume_from_saved = False,
                                      save_model = "best",  evaluate_on_test = "best",
                                      evaluator_validation = None, evaluator_test = None, evaluator_validation_earlystopping = None,
-                                     metric_to_optimize = "PRECISION",
+                                     metric_to_optimize = 'MAP',
                                      output_folder_path ="result_experiments/", parallelizeKNN = True,
                                      allow_weighting = True,similarity_type_list = None):
     """
@@ -399,7 +399,7 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
 
     try:
 
-        output_file_name_root = recommender_class.RECOMMENDER_NAME
+        output_file_name_root = recommender_class.RECOMMENDER_NAME + '_' + metric_to_optimize
 
         parameterSearch = SearchBayesianSkopt(recommender_class, evaluator_validation=evaluator_validation, evaluator_test=evaluator_test)
 
@@ -465,7 +465,7 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
             else:
                 recommender_input_args_last_test = None
 
-
+            print(metric_to_optimize)
             run_KNNCFRecommender_on_similarity_type_partial = partial(run_KNNRecommender_on_similarity_type,
                                                            recommender_input_args = recommender_input_args,
                                                            parameter_search_space = {},
@@ -494,6 +494,7 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
 
                 for similarity_type in similarity_type_list:
                     run_KNNCFRecommender_on_similarity_type_partial(similarity_type)
+                    print(run_KNNCFRecommender_on_similarity_type_partial(similarity_type))
 
 
             return

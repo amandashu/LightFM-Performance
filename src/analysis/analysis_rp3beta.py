@@ -4,6 +4,9 @@ from scipy.sparse import csr_matrix
 from src.models.Base.Evaluation.Evaluator import EvaluatorHoldout
 from src.models.GraphBased.RP3betaRecommender import RP3betaRecommender
 from src.models.ParameterTuning.run_parameter_search import runParameterSearch_Collaborative
+import re
+import ast
+import pandas as pd
 
 
 def run_rp3beta(data, metric_to_optimize, cutoffs):
@@ -34,8 +37,28 @@ def run_rp3beta(data, metric_to_optimize, cutoffs):
         print("On recommender {} Exception {}".format(RP3betaRecommender, str(e)))
         traceback.print_exc()
 
-    # get test results without tuning
-    recommender = RP3betaRecommender(data['train'])
-    recommender.fit()
+    tuning = ""
+    with open("result_experiments/RP3betaRecommender_" + metric_to_optimize + '_SearchBayesianSkopt.txt') as f:
+        for line in f:
+            pass
+        tuning = ast.literal_eval(re.search('({.+})', line).group(0))
+
+            
+    #Find metrics for each cutoff
+    recommender = RP3betaRecommender(data['train_small'])
+    recommender.fit(topK = tuning['topK'], alpha = tuning['alpha'], beta = tuning['beta'], normalize_similarity = tuning['normalize_similarity']) 
     results_dict, results_run_string = evaluator_test.evaluateRecommender(recommender)
-    print("Result of rp3beta is:\n" + results_run_string)
+    cutoff_metrics = {}
+    for key in results_dict.keys():
+        cutoff_metrics[key] = results_dict[key][metric_to_optimize]
+
+    
+    # Final Output-each cutoff and metric value
+    metric_cols = []
+    for cutoff in cutoff_metrics.keys():
+        metric_cols.append(metric_to_optimize + '@' + str(cutoff))
+            
+    metric_table = pd.DataFrame(np.array([list(cutoff_metrics.values())]), columns=metric_cols)
+    metric_table.index = np.array(['RP3beta'])
+    print(metric_table)
+    metric_table.to_csv('calculatedMetrics\RP3beta_' + metric_to_optimize + '.csv', index=False)

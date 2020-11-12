@@ -4,8 +4,12 @@ from scipy.sparse import csr_matrix
 from src.models.Base.Evaluation.Evaluator import EvaluatorHoldout
 from src.models.KNN.ItemKNNCFRecommender import ItemKNNCFRecommender
 from src.models.ParameterTuning.run_parameter_search import runParameterSearch_Collaborative
+import re
+import ast
+import pandas as pd
 
 def run_itemknn_cf(data, metric_to_optimize, cutoffs):
+    
     # get data in sparse matrices
     for key in data:
         data[key] = csr_matrix(data[key])
@@ -32,9 +36,64 @@ def run_itemknn_cf(data, metric_to_optimize, cutoffs):
     except Exception as e:
         print("On recommender {} Exception {}".format(ItemKNNCFRecommender, str(e)))
         traceback.print_exc()
+    
+    similarities = ['asymmetric', 'cosine', 'dice', 'jaccard', 'tversky']
+    sim_config_dict = {}
+    
+    # Get best configuration with each similarity
+    for sim in similarities:
+        config = ""
+        with open("result_experiments/ItemKNNCFRecommender_" + metric_to_optimize + "_" + sim + '_SearchBayesianSkopt.txt') as f:
+            for line in f:
+                pass
+            config = ast.literal_eval(re.search('({.+})', line).group(0))
+            sim_config_dict[sim] = config
+            
+    #Find metrics for each similarity and cutoff
+    sim_metric_dict = {}
+    for sim in similarities:
+        tuning = sim_config_dict[sim]
+        recommender = ItemKNNCFRecommender(data['train_small'])
+        
+        if sim == 'asymmetric':
+            recommender.fit(topK = tuning['topK'], shrink = tuning['shrink'], similarity=tuning['similarity'], normalize=tuning['normalize'], asymmetric_alpha=tuning['asymmetric_alpha'], feature_weighting=tuning['feature_weighting']) 
+            
+        elif sim == 'cosine':
+            recommender.fit(topK = tuning['topK'], shrink = tuning['shrink'], similarity=tuning['similarity'], normalize=tuning['normalize'], feature_weighting=tuning['feature_weighting']) 
+            
+        elif sim == 'tversky':
+            recommender.fit(topK = tuning['topK'], shrink = tuning['shrink'], similarity=tuning['similarity'], normalize=tuning['normalize'], tversky_alpha=tuning['tversky_alpha'], tversky_beta = tuning['tversky_beta']) 
+            
+        else:
+            recommender.fit(topK = tuning['topK'], shrink = tuning['shrink'], similarity=tuning['similarity'], normalize=tuning['normalize']) 
+        
+        results_dict, results_run_string = evaluator_test.evaluateRecommender(recommender)
+        metric = {}
+        for key in results_dict.keys():
+            metric[key] = results_dict[key][metric_to_optimize]
+        sim_metric_dict[sim] = metric
 
-    # get test results without tuning
-    recommender = ItemKNNCFRecommender(data['train'])
-    recommender.fit()
-    results_dict, results_run_string = evaluator_test.evaluateRecommender(recommender)
-    print("Result of itemknn_cf is:\n" + results_run_string)
+    
+    # Find best config for each cutoff 
+    cutoff_metrics = {}
+    cutoff_configs = {}
+    for cutoff in cutoffs:
+        max_metric = 0
+        best_config = ""
+        for sim in similarities:
+            metric = sim_metric_dict[sim][cutoff]
+            if metric > max_metric:
+                max_metric = metric
+                best_config = sim_config_dict[sim]
+        cutoff_metrics[cutoff] = max_metric
+        cutoff_configs[cutoff] = best_config
+    
+    metric_cols = []
+    for cutoff in cutoff_metrics.keys():
+        metric_cols.append(metric_to_optimize + '@' + str(cutoff))
+            
+    metric_table = pd.DataFrame(np.array([list(cutoff_metrics.values())]), columns=metric_cols)
+    metric_table.index = np.array(['ItemKNNCF'])
+    print(metric_table)
+    metric_table.to_csv('calculatedMetrics\itemknncf_' + metric_to_optimize + '.csv', index=False)
+    

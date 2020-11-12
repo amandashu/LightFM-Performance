@@ -4,6 +4,9 @@ from scipy.sparse import csr_matrix
 from src.models.Base.Evaluation.Evaluator import EvaluatorHoldout
 from src.models.GraphBased.P3alphaRecommender import P3alphaRecommender
 from src.models.ParameterTuning.run_parameter_search import runParameterSearch_Collaborative
+import re
+import ast
+import pandas as pd
 
 def run_p3alpha(data, metric_to_optimize, cutoffs):
     # get data in sparse matrices
@@ -32,9 +35,28 @@ def run_p3alpha(data, metric_to_optimize, cutoffs):
     except Exception as e:
         print("On recommender {} Exception {}".format(P3alphaRecommender, str(e)))
         traceback.print_exc()
+    
+    tuning = ""
+    with open("result_experiments/P3alphaRecommender_" + metric_to_optimize + '_SearchBayesianSkopt.txt') as f:
+        for line in f:
+            pass
+        tuning = ast.literal_eval(re.search('({.+})', line).group(0))
 
-    # get test results without tuning
-    recommender = P3alphaRecommender(data['train'])
-    recommender.fit()
+            
+    #Find metrics for each cutoff
+    recommender = P3alphaRecommender(data['train_small'])
+    recommender.fit(topK = tuning['topK'], alpha = tuning['alpha'], normalize_similarity = tuning['normalize_similarity']) 
     results_dict, results_run_string = evaluator_test.evaluateRecommender(recommender)
-    print("Result of p3alpha is:\n" + results_run_string)
+    cutoff_metrics = {}
+    for key in results_dict.keys():
+        cutoff_metrics[key] = results_dict[key][metric_to_optimize]
+
+    
+    metric_cols = []
+    for cutoff in cutoff_metrics.keys():
+        metric_cols.append(metric_to_optimize + '@' + str(cutoff))
+            
+    metric_table = pd.DataFrame(np.array([list(cutoff_metrics.values())]), columns=metric_cols)
+    metric_table.index = np.array(['P3alpha'])
+    print(metric_table)
+    metric_table.to_csv('calculatedMetrics\p3alpha_' + metric_to_optimize + '.csv', index=False)

@@ -1,3 +1,4 @@
+  
 from lightfm import LightFM
 from lightfm.evaluation import precision_at_k
 from lightfm.evaluation import recall_at_k
@@ -45,7 +46,7 @@ def run_lightfm(data, **kwargs):
 
     # print metrics
     print('\n###### LightFM - Tuned ######')
-    print_lightfm_metrics(data, model,kwargs['cutoffs'])
+    print_lightfm_metrics(data, model, kwargs['cutoffs'])
 
     ###############
     ### untuned ###

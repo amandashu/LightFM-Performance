@@ -1,0 +1,3 @@
+{
+    "metrics_to_optimize": ["PRECISION", "RECALL"]
+}
