@@ -1,4 +1,4 @@
 {
-  "metric_to_optimize": "PRECISION",
+  "metrics_to_optimize": ["PRECISION", "RECALL"],
   "cutoffs" : [5,10,20]
 }
