@@ -1,4 +1,8 @@
-result/experiments
+report/
+calculatedMetrics/
+latexOutputs/
+results/
+result_experiments/
 testing/
 data/
 __pycache__
