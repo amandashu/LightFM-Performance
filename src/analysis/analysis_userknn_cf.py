@@ -7,6 +7,7 @@ from src.models.ParameterTuning.run_parameter_search import runParameterSearch_C
 import re
 import ast
 import pandas as pd
+import os
 
 def run_userknn_cf(data, metrics_to_optimize, cutoffs):
     # get data in sparse matrices
@@ -100,6 +101,10 @@ def run_userknn_cf(data, metrics_to_optimize, cutoffs):
     combined_df.insert(0, 'Recommender', np.array(['UserKNNCF']))
     print(combined_df)
 
+    # add results folder if it doesn't exist
+    if not os.path.exists('results/'):
+        os.makedirs('results/')
+        
     try:
         all_df = pd.read_csv('results\Metrics.csv')
         dfs_index = list(all_df['Recommender'].values)

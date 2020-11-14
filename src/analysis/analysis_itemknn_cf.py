@@ -7,6 +7,7 @@ from src.models.ParameterTuning.run_parameter_search import runParameterSearch_C
 import re
 import ast
 import pandas as pd
+import os
 
 def run_itemknn_cf(data, metrics_to_optimize, cutoffs):
 
@@ -104,6 +105,10 @@ def run_itemknn_cf(data, metrics_to_optimize, cutoffs):
     combined_df = pd.concat(dfs_for_metrics, axis=1)
     combined_df.insert(0, 'Recommender', np.array(['ItemKNNCF']))
     print(combined_df)
+
+    # add results folder if it doesn't exist
+    if not os.path.exists('results/'):
+        os.makedirs('results/')
 
     try:
         all_df = pd.read_csv('results\Metrics.csv')

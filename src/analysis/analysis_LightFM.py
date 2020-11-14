@@ -6,6 +6,7 @@ from scipy.sparse import coo_matrix
 from sklearn.model_selection import ParameterGrid
 import pandas as pd
 import numpy as np
+import os
 
 def run_lightfm(data, **kwargs):
     # get data in sparse matrices
@@ -60,6 +61,10 @@ def run_lightfm(data, **kwargs):
     combined_df = pd.concat(dfs_for_metrics, axis=1)
     combined_df.insert(0, 'Recommender', np.array(['LightFM']))
     print(combined_df)
+
+    # add results folder if it doesn't exist
+    if not os.path.exists('results/'):
+        os.makedirs('results/')
 
     try:
         all_df = pd.read_csv('results\Metrics.csv')

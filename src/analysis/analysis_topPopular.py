@@ -3,6 +3,7 @@ from src.models.Base.NonPersonalizedRecommender import TopPop
 from scipy.sparse import csr_matrix
 import pandas as pd
 import numpy as np
+import os
 
 def run_toppop(data, metrics_to_optimize, cutoffs):
     # get train, test data in sparse matrices
@@ -37,6 +38,10 @@ def run_toppop(data, metrics_to_optimize, cutoffs):
     combined_df.insert(0, 'Recommender', np.array(['TopPop']))
     print(combined_df)
 
+    # add results folder if it doesn't exist
+    if not os.path.exists('results/'):
+        os.makedirs('results/')
+        
     try:
         all_df = pd.read_csv('results\Metrics.csv')
         dfs_index = list(all_df['Recommender'].values)
