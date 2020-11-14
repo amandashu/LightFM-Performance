@@ -37,36 +37,36 @@ def run_p3alpha(data, metrics_to_optimize, cutoffs):
         except Exception as e:
             print("On recommender {} Exception {}".format(P3alphaRecommender, str(e)))
             traceback.print_exc()
-    
+
         tuning = ""
         with open("result_experiments/P3alphaRecommender_" + metric_to_optimize + '_SearchBayesianSkopt.txt') as f:
             for line in f:
                 pass
             tuning = ast.literal_eval(re.search('({.+})', line).group(0))
 
-            
+
         #Find metrics for each cutoff
         recommender = P3alphaRecommender(data['train'])
-        recommender.fit(topK = tuning['topK'], alpha = tuning['alpha'], normalize_similarity = tuning['normalize_similarity']) 
+        recommender.fit(topK = tuning['topK'], alpha = tuning['alpha'], normalize_similarity = tuning['normalize_similarity'])
         results_dict, results_run_string = evaluator_test.evaluateRecommender(recommender)
-        
+
         cutoff_metrics = {}
         for cutoff in cutoffs:
             cutoff_metrics[cutoff] = results_dict[cutoff][metric_to_optimize]
 
-    
+
         metric_cols = []
         for cutoff in cutoff_metrics.keys():
             metric_cols.append(metric_to_optimize + '@' + str(cutoff))
-            
+
         metric_table = pd.DataFrame(np.array([list(cutoff_metrics.values())]), columns=metric_cols)
-        print(metric_table)
+        #print(metric_table)
         dfs_for_metrics.append(metric_table)
-    
+
     combined_df = pd.concat(dfs_for_metrics, axis=1)
     combined_df.insert(0, 'Recommender', np.array(['P3alpha']))
     print(combined_df)
-    
+
     try:
         all_df = pd.read_csv('calculatedMetrics\Metrics.csv')
         dfs_index = list(all_df['Recommender'].values)

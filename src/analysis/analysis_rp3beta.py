@@ -45,29 +45,29 @@ def run_rp3beta(data, metrics_to_optimize, cutoffs):
                 pass
             tuning = ast.literal_eval(re.search('({.+})', line).group(0))
 
-            
+
         #Find metrics for each cutoff
         recommender = RP3betaRecommender(data['train'])
-        recommender.fit(topK = tuning['topK'], alpha = tuning['alpha'], beta = tuning['beta'], normalize_similarity = tuning['normalize_similarity']) 
+        recommender.fit(topK = tuning['topK'], alpha = tuning['alpha'], beta = tuning['beta'], normalize_similarity = tuning['normalize_similarity'])
         results_dict, results_run_string = evaluator_test.evaluateRecommender(recommender)
-        
+
         cutoff_metrics = {}
         for cutoff in cutoffs:
             cutoff_metrics[cutoff] = results_dict[cutoff][metric_to_optimize]
-        
+
         # Final Output-each cutoff and metric value
         metric_cols = []
         for cutoff in cutoff_metrics.keys():
             metric_cols.append(metric_to_optimize + '@' + str(cutoff))
-            
+
         metric_table = pd.DataFrame(np.array([list(cutoff_metrics.values())]), columns=metric_cols)
-        print(metric_table)
+        #print(metric_table)
         dfs_for_metrics.append(metric_table)
-        
+
     combined_df = pd.concat(dfs_for_metrics, axis=1)
     combined_df.insert(0, 'Recommender', np.array(['RP3beta']))
     print(combined_df)
-    
+
     try:
         all_df = pd.read_csv('calculatedMetrics\Metrics.csv')
         dfs_index = list(all_df['Recommender'].values)

@@ -9,7 +9,7 @@ import ast
 import pandas as pd
 
 def run_itemknn_cf(data, metrics_to_optimize, cutoffs):
-    
+
     # get data in sparse matrices
     for key in data:
         data[key] = csr_matrix(data[key])
@@ -18,7 +18,7 @@ def run_itemknn_cf(data, metrics_to_optimize, cutoffs):
     evaluator_validation = EvaluatorHoldout(data['validation'], cutoff_list=cutoffs, exclude_seen=False)
     evaluator_test = EvaluatorHoldout(data['test'], cutoff_list=cutoffs, exclude_seen=False)
     dfs_for_metrics = []
-    
+
     for metric in metrics_to_optimize:
         metric_to_optimize = metric
 
@@ -40,10 +40,10 @@ def run_itemknn_cf(data, metrics_to_optimize, cutoffs):
         except Exception as e:
             print("On recommender {} Exception {}".format(ItemKNNCFRecommender, str(e)))
             traceback.print_exc()
-    
+
         similarities = ['asymmetric', 'cosine', 'dice', 'jaccard', 'tversky']
         sim_config_dict = {}
-    
+
         # Get best configuration with each similarity
         for sim in similarities:
             config = ""
@@ -52,34 +52,34 @@ def run_itemknn_cf(data, metrics_to_optimize, cutoffs):
                     pass
                 config = ast.literal_eval(re.search('({.+})', line).group(0))
                 sim_config_dict[sim] = config
-            
+
         #Find metrics for each similarity and cutoff
         sim_metric_dict = {}
         for sim in similarities:
             tuning = sim_config_dict[sim]
             recommender = ItemKNNCFRecommender(data['train'])
-        
+
             if sim == 'asymmetric':
-                recommender.fit(topK = tuning['topK'], shrink = tuning['shrink'], similarity=tuning['similarity'], normalize=tuning['normalize'], asymmetric_alpha=tuning['asymmetric_alpha'], feature_weighting=tuning['feature_weighting']) 
-            
+                recommender.fit(topK = tuning['topK'], shrink = tuning['shrink'], similarity=tuning['similarity'], normalize=tuning['normalize'], asymmetric_alpha=tuning['asymmetric_alpha'], feature_weighting=tuning['feature_weighting'])
+
             elif sim == 'cosine':
-                recommender.fit(topK = tuning['topK'], shrink = tuning['shrink'], similarity=tuning['similarity'], normalize=tuning['normalize'], feature_weighting=tuning['feature_weighting']) 
-            
+                recommender.fit(topK = tuning['topK'], shrink = tuning['shrink'], similarity=tuning['similarity'], normalize=tuning['normalize'], feature_weighting=tuning['feature_weighting'])
+
             elif sim == 'tversky':
-                recommender.fit(topK = tuning['topK'], shrink = tuning['shrink'], similarity=tuning['similarity'], normalize=tuning['normalize'], tversky_alpha=tuning['tversky_alpha'], tversky_beta = tuning['tversky_beta']) 
-            
+                recommender.fit(topK = tuning['topK'], shrink = tuning['shrink'], similarity=tuning['similarity'], normalize=tuning['normalize'], tversky_alpha=tuning['tversky_alpha'], tversky_beta = tuning['tversky_beta'])
+
             else:
-                recommender.fit(topK = tuning['topK'], shrink = tuning['shrink'], similarity=tuning['similarity'], normalize=tuning['normalize']) 
-        
+                recommender.fit(topK = tuning['topK'], shrink = tuning['shrink'], similarity=tuning['similarity'], normalize=tuning['normalize'])
+
             results_dict, results_run_string = evaluator_test.evaluateRecommender(recommender)
-            
+
             metric = {}
             for cutoff in cutoffs:
                 metric[cutoff] = results_dict[cutoff][metric_to_optimize]
             sim_metric_dict[sim] = metric
 
-    
-        # Find best config for each cutoff 
+
+        # Find best config for each cutoff
         cutoff_metrics = {}
         cutoff_configs = {}
         for cutoff in cutoffs:
@@ -92,19 +92,19 @@ def run_itemknn_cf(data, metrics_to_optimize, cutoffs):
                     best_config = sim_config_dict[sim]
             cutoff_metrics[cutoff] = max_metric
             cutoff_configs[cutoff] = best_config
-    
+
         metric_cols = []
         for cutoff in cutoff_metrics.keys():
             metric_cols.append(metric_to_optimize + '@' + str(cutoff))
-            
+
         metric_table = pd.DataFrame(np.array([list(cutoff_metrics.values())]), columns=metric_cols)
-        print(metric_table)
+        #print(metric_table)
         dfs_for_metrics.append(metric_table)
-    
+
     combined_df = pd.concat(dfs_for_metrics, axis=1)
     combined_df.insert(0, 'Recommender', np.array(['ItemKNNCF']))
     print(combined_df)
-    
+
     try:
         all_df = pd.read_csv('calculatedMetrics\Metrics.csv')
         dfs_index = list(all_df['Recommender'].values)
