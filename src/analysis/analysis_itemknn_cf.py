@@ -106,7 +106,7 @@ def run_itemknn_cf(data, metrics_to_optimize, cutoffs):
     print(combined_df)
 
     try:
-        all_df = pd.read_csv('calculatedMetrics\Metrics.csv')
+        all_df = pd.read_csv('results\Metrics.csv')
         dfs_index = list(all_df['Recommender'].values)
         combined_df_index = list(combined_df['Recommender'].values)[0]
         if combined_df_index in dfs_index:
@@ -116,8 +116,8 @@ def run_itemknn_cf(data, metrics_to_optimize, cutoffs):
             all_df = pd.concat([all_df, combined_df])
         all_df = all_df.reset_index(drop=True)
         print(all_df)
-        all_df.to_csv('calculatedMetrics\Metrics.csv', index=False)
-        all_df.to_latex('latexOutputs\Metrics.tex')
+        all_df.to_csv('results\Metrics.csv', index=False)
+        all_df.to_latex('results\Metrics.tex')
     except Exception as e:
-        combined_df.to_csv('calculatedMetrics\Metrics.csv', index=False)
-        combined_df.to_latex('latexOutputs\Metrics.tex')
+        combined_df.to_csv('results\Metrics.csv', index=False)
+        combined_df.to_latex('results\Metrics.tex')

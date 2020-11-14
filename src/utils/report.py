@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import os
 
 def line_plot(figs_out_path, metrics_to_include):
-    data = pd.read_csv('calculatedMetrics/Metrics.csv').set_index('Recommender')
+    data = pd.read_csv('results/Metrics.csv').set_index('Recommender')
 
     if not os.path.exists(figs_out_path):
         os.makedirs(figs_out_path)
@@ -17,7 +17,7 @@ def line_plot(figs_out_path, metrics_to_include):
         fig = plt.figure()
         ax = plt.subplot(111)
         ax.set_xlabel('Cutoff')
-        ax.set_title(m+"@", pad=35)
+        ax.set_title(m+"@", pad=30)
         for i,r in df.iterrows():
             plt.plot(r,label=r.name)
         ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.1),ncol=3, fancybox=True)
@@ -38,7 +38,7 @@ def convert_notebook(report_in_path, report_out_path):
         "TemplateExporter": {"exclude_output_prompt": True, "exclude_input": True, "exclude_input_prompt": True},
     }
 
-    nb = nbformat.read(open(report_in_path), as_version=4)
+    nb = nbformat.read(open(report_in_path,encoding="utf-8"), as_version=4)
     html_exporter = HTMLExporter(config=config)
 
     os.chdir(indir)
