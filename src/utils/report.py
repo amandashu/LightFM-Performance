@@ -32,6 +32,8 @@ def convert_notebook(report_in_path, report_out_path):
 
     curdir = os.path.abspath(os.getcwd())
     indir, _ = os.path.split(report_in_path)
+    outdir, _ = os.path.split(report_out_path)
+    os.makedirs(outdir, exist_ok=True)
 
     config = {
         "ExecutePreprocessor": {"enabled": True},
