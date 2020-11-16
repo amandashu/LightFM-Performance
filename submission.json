@@ -2,6 +2,6 @@
     "config": ["config/data-dsmlp-params.json", "config/p3alpha-params.json"],
     "build": "run.py",
     "library": ["src"],
-    "notebook": ["report.ipynb"],
-    "targets": ["data-dsmlp", "p3alpha"] 
+    "notebook": ["notebook/report.ipynb"],
+    "targets": ["data-dsmlp", "p3alpha"]
 }
