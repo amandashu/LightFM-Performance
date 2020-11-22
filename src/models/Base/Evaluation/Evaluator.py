@@ -351,11 +351,11 @@ class Evaluator(object):
             elapsed_time = time.time()-self._start_time
             new_time_value, new_time_unit = seconds_to_biggest_unit(elapsed_time)
 
-            self._print("Processed {} ( {:.2f}% ) in {:.2f} {}. Users per second: {:.0f}".format(
-                          self._n_users_evaluated,
-                          100.0* float(self._n_users_evaluated)/len(self.users_to_evaluate),
-                          new_time_value, new_time_unit,
-                          float(self._n_users_evaluated)/elapsed_time))
+            # self._print("Processed {} ( {:.2f}% ) in {:.2f} {}. Users per second: {:.0f}".format(
+            #               self._n_users_evaluated,
+            #               100.0* float(self._n_users_evaluated)/len(self.users_to_evaluate),
+            #               new_time_value, new_time_unit,
+            #               float(self._n_users_evaluated)/elapsed_time))
 
             sys.stdout.flush()
             sys.stderr.flush()

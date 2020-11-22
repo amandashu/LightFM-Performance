@@ -15,109 +15,115 @@ from analysis_p3alpha import run_p3alpha
 from analysis_rp3beta import run_rp3beta
 from analysis_LightFM import run_lightfm
 from report import report
+from clean import remove_results
 
 import numpy as np
 import pandas as pd
+
+def all(data):
+    """
+    Runs all the algorithms, given data
+    """
+    algo_names = ['toppop', 'itemknncf', 'userknncf', 'p3alpha', 'rp3beta', 'lightfm']
+    config_dct = {}
+
+    for a in algo_names:
+        with open('config/' + a + '-params.json') as fh:
+            analysis_cfg = json.load(fh)
+        config_dct[a] = analysis_cfg
+    run_analysis(data, config_dct)
+
+    # create report
+    with open('config/report-params.json') as fh:
+        report_cfg = json.load(fh)
+    report(**report_cfg)
+
+def data_target(target):
+    """
+    Runs the data pipeline, given the data target
+    """
+    with open('config/' + target + '-params.json') as fh:
+        data_cfg = json.load(fh)
+
+    data = get_data(**data_cfg)
+    return data
+
+def algo_target(data, target):
+    """
+    Runs the model algorithm, given the algorithm target
+    """
+    with open('config/' + target + '-params.json') as fh:
+        analysis_cfg = json.load(fh)
+
+    if target == 'toppop':
+        run_toppop(data, **analysis_cfg)
+    elif target == 'itemknncf':
+        run_itemknn_cf(data, **analysis_cfg)
+    elif target == 'userknncf':
+        run_userknn_cf(data, **analysis_cfg)
+    elif target == 'p3alpha':
+        run_p3alpha(data, **analysis_cfg)
+    elif target == 'rp3beta':
+        run_rp3beta(data, **analysis_cfg)
+    elif target == 'lightfm':
+        run_lightfm(data, **analysis_cfg)
+
+    # create report
+    with open('config/report-params.json') as fh:
+        report_cfg = json.load(fh)
+    report(**report_cfg)
 
 def main(targets):
     '''
     Runs the main project pipeline logic, given the targets.
     '''
+    ### standard targets
+    if 'clean' in targets:
+        remove_results()
+
+    if 'all' in targets: # defaults to dsmlp data
+        data = data_target('data-dsmlp')
+        all(data)
+        return
+
+    if 'test' in targets:
+        data = data_target('data-test')
+        all(data)
+        return
+
     ### data targets ###
     if 'data-local' in targets:
-        with open('config/data-local-params.json') as fh:
-            data_cfg = json.load(fh)
-
-        data = get_data(**data_cfg)
+        data = data_target('data-local')
 
     if 'data-dsmlp' in targets:
-        with open('config/data-dsmlp-params.json') as fh:
-            data_cfg = json.load(fh)
+        data = data_target('data-dsmlp')
 
-        data = get_data(**data_cfg)
+    if 'data-test' in targets:
+        data = data_target('data-test')
 
     ### all analysis targets ###
-    if 'all' in targets:
-        algo_names = ['toppop', 'itemknncf', 'userknncf', 'p3alpha', 'rp3beta', 'lightfm']
-        config_dct = {}
-
-        for a in algo_names:
-            with open('config/' + a + '-params.json') as fh:
-                analysis_cfg = json.load(fh)
-            config_dct[a] = analysis_cfg
-        run_analysis(data, config_dct)
-
-        # create report
-        with open('config/report-params.json') as fh:
-            report_cfg = json.load(fh)
-        report(**report_cfg)
+    if 'all-algos' in targets:
+        all(data)
 
     ### individual analysis target ###
     if 'toppop' in targets:
-        with open('config/toppop-params.json') as fh:
-            analysis_cfg = json.load(fh)
-
-        run_toppop(data, **analysis_cfg)
-
-        # create report
-        with open('config/report-params.json') as fh:
-            report_cfg = json.load(fh)
-        report(**report_cfg)
+        algo_target(data, 'toppop')
 
     if 'itemknncf' in targets:
-        with open('config/itemknncf-params.json') as fh:
-            analysis_cfg = json.load(fh)
-
-        run_itemknn_cf(data, **analysis_cfg)
-
-        # create report
-        with open('config/report-params.json') as fh:
-            report_cfg = json.load(fh)
-        report(**report_cfg)
+        algo_target(data, 'itemknncf')
 
     if 'userknncf' in targets:
-        with open('config/userknncf-params.json') as fh:
-            analysis_cfg = json.load(fh)
-
-        run_userknn_cf(data, **analysis_cfg)
-
-        # create report
-        with open('config/report-params.json') as fh:
-            report_cfg = json.load(fh)
-        report(**report_cfg)
+        algo_target(data, 'userknncf')
 
     if 'p3alpha' in targets:
-        with open('config/p3alpha-params.json') as fh:
-            analysis_cfg = json.load(fh)
-
-        run_p3alpha(data, **analysis_cfg)
-
-        # create report
-        with open('config/report-params.json') as fh:
-            report_cfg = json.load(fh)
-        report(**report_cfg)
+        algo_target(data, 'p3alpha')
 
     if 'rp3beta' in targets:
-        with open('config/rp3beta-params.json') as fh:
-            analysis_cfg = json.load(fh)
-
-        run_rp3beta(data, **analysis_cfg)
-
-        # createreport
-        with open('config/report-params.json') as fh:
-            report_cfg = json.load(fh)
-        report(**report_cfg)
+        algo_target(data, 'rp3beta')
 
     if 'lightfm' in targets:
-        with open('config/lightfm-params.json') as fh:
-            analysis_cfg = json.load(fh)
+        algo_target(data, 'lightfm')
 
-        run_lightfm(data, **analysis_cfg)
-
-        # create report
-        with open('config/report-params.json') as fh:
-            report_cfg = json.load(fh)
-        report(**report_cfg)
     return
 
 if __name__ == '__main__':

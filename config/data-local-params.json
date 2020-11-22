@@ -1,5 +1,7 @@
 {
   "train_path":"data/ua.base",
   "test_path":"data/ua.test",
-  "min_rating": 5
+  "min_rating": 5,
+  "num_items" : 1682,
+  "num_users" : 943
 }

@@ -8,8 +8,6 @@ The data used is the [Movielens 100k dataset](https://grouplens.org/datasets/mov
 See [here](http://files.grouplens.org/datasets/movielens/ml-100k-README.txt) for a detailed description of the data. We use the files:
 - `ua.base`: training data
 - `ua.test`: testing data
-- `u.item`: item info
-- `u.user`: user info
 
 ## Code Organization
 
@@ -34,22 +32,34 @@ The `src/models` folder contains baseline algorithms and evaluation code, taken 
 
 In the `src/utils` folder:
 - `report.py`: contains function `report` to save metric figures in `results/` and outputs `report.html` in `report/`. This file contains code modified from [here](https://github.com/DSC-Capstone/project-templates/blob/EDA/src/utils.py)
+- `clean.py`: contains function `remove_results` that implements the standard target `clean`
+
+#### Notebook
+The `notebook` folder contains a Jupyter Notebook file that is run when building the report.
+
+#### References
+The `references` folder contains our citations.
+
+#### Test
+The `test` folder contains the testing data that is utilized for the standard target `test`.
 
 ## Run the Results
 On DSMLP, run this command to run all the algorithms and get the results:
 ```console
-python run.py data-dsmlp all
+python run.py data-dsmlp all-algos
 ```
 
 On local, run this command to run all the algorithms and get the results (this assumes there is a folder called `data`, which contains required data files):
 ```console
-python run.py data-local all
+python run.py data-local all-algos
 ```
 
 Besides `all`, you can specify which algorithms to run if you only want to get the results of certain ones. Possible targets include `toppop`, `itemknncf`, `userknncf`, `p3alpha`, `rp3beta`, and `lightfm`. The code below runs the p3alpha baseline algorithm:
 ```console
 python run.py data-dsmlp p3alpha
 ```
+
+Standard targets are also implemented. `all` will run all the algorithms and defaults to using data on DSMLP. `clean` will delete the folders that are outputted after running. `test` will run all the algorithms, using the test data (this data is not real and it used to check correctness of the pipeline).
 
 Running any baseline algorithm will create a folder `result_experiments`, which holds several files related to the tuning of the baseline algorithms.
 
@@ -59,9 +69,3 @@ Running any number of algorithms will create a folder `results` which contains:
 - `precision.png`/`recall.png`: line plots comparing algorithms by their metrics over each cutoff
 
 Additionally, a folder `report` will contain `report.html`, which is the html version of `report.ipynb` that lies in the `notebook` folder.
-
-
-## Contributions
-Checkpoint 1:
-- Amanda: data ingestion pipeline
-- Sarat: introduction

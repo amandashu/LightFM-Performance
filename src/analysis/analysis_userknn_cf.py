@@ -104,7 +104,7 @@ def run_userknn_cf(data, metrics_to_optimize, cutoffs):
     # add results folder if it doesn't exist
     if not os.path.exists('results/'):
         os.makedirs('results/')
-        
+
     try:
         all_df = pd.read_csv('results\Metrics.csv')
         dfs_index = list(all_df['Recommender'].values)
