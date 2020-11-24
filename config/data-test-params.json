@@ -2,6 +2,6 @@
   "train_path":"test/test_data/test_data_train.txt",
   "test_path":"test/test_data/test_data_test.txt",
   "min_rating": 5,
-  "num_items" : 25,
-  "num_users" : 4
+  "num_items" : 30,
+  "num_users" : 30
 }
