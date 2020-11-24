@@ -67,7 +67,7 @@ def run_lightfm(data, **kwargs):
         os.makedirs('results/')
 
     try:
-        all_df = pd.read_csv('results\Metrics.csv')
+        all_df = pd.read_csv('results/Metrics.csv')
         dfs_index = list(all_df['Recommender'].values)
         combined_df_index = list(combined_df['Recommender'].values)[0]
         if combined_df_index in dfs_index:
@@ -77,8 +77,8 @@ def run_lightfm(data, **kwargs):
             all_df = pd.concat([all_df, combined_df])
         all_df = all_df.reset_index(drop=True)
         print(all_df)
-        all_df.to_csv('results\Metrics.csv', index=False)
-        all_df.to_latex('results\Metrics.tex')
+        all_df.to_csv('results/Metrics.csv', index=False)
+        all_df.to_latex('results/Metrics.tex')
     except Exception as e:
-        combined_df.to_csv('results\Metrics.csv', index=False)
-        combined_df.to_latex('results\Metrics.tex')
+        combined_df.to_csv('results/Metrics.csv', index=False)
+        combined_df.to_latex('results/Metrics.tex')
