@@ -7,12 +7,13 @@ def read_datafiles(train_path, test_path, item_path):
     train_df = pd.read_csv(train_path,'\t', names=col_names)
     test_df = pd.read_csv(test_path,'\t', names=col_names)
 
-    col_names =[ 'movie id' , 'movie title' , 'release date' , 'video release date' ,
-              'IMDb URL' , 'unknown', 'Action','Adventure' , 'Animation' ,
+    genre_names =['unknown', 'Action','Adventure' , 'Animation' ,
               "Children's" , 'Comedy' , 'Crime' , 'Documentary' , 'Drama' , 'Fantasy' ,
               'Film-Noir' , 'Horror' , 'Musical' , 'Mystery' , 'Romance' , 'Sci-Fi' ,
               'Thriller' , 'War' , 'Western']
-    item_df = pd.read_csv( item_path,sep='|', names=col_names ,encoding='latin-1')
+    col_names = ['movie id' , 'movie title' , 'release date' , 'video release date' ,
+              'IMDb URL'] + genre_names
+    item_df = pd.read_csv( item_path,sep='|', names=col_names, usecols = genre_names, encoding='latin-1')
     return train_df, test_df, item_df
 
 def user_item_interactions(df, min_rating, num_items, num_users):
@@ -59,5 +60,5 @@ def get_data(**kwargs):
     dct['test'] = user_item_interactions(test_df, mr, ni, nu)
     dct['train_small'] = user_item_interactions(train_smalldf, mr, ni, nu)
     dct['validation'] = user_item_interactions(validation_df, mr, ni, nu)
-    dct['item_features'] = item_df
+    dct['item_features'] = item_df.to_numpy()
     return dct
