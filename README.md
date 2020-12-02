@@ -54,7 +54,7 @@ On local, run this command to run all the algorithms and get the results (this a
 python run.py data-local all-algos
 ```
 
-Besides `all`, you can specify which algorithms to run if you only want to get the results of certain ones. Possible targets include `toppop`, `itemknncf`, `userknncf`, `p3alpha`, `rp3beta`, and `lightfm`. The code below runs the p3alpha baseline algorithm:
+Besides `all-algos`, you can specify which algorithms to run if you only want to get the results of certain ones. Possible targets include `toppop`, `itemknncf`, `userknncf`, `p3alpha`, `rp3beta`, and `lightfm`. The code below runs the p3alpha baseline algorithm:
 ```console
 python run.py data-dsmlp p3alpha
 ```
