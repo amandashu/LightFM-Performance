@@ -2,11 +2,18 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 
-def read_datafiles(train_path, test_path):
+def read_datafiles(train_path, test_path, item_path):
     col_names = ['user id','item id','rating','timestamp']
     train_df = pd.read_csv(train_path,'\t', names=col_names)
     test_df = pd.read_csv(test_path,'\t', names=col_names)
-    return train_df, test_df
+
+    col_names =[ 'movie id' , 'movie title' , 'release date' , 'video release date' ,
+              'IMDb URL' , 'unknown', 'Action','Adventure' , 'Animation' ,
+              "Children's" , 'Comedy' , 'Crime' , 'Documentary' , 'Drama' , 'Fantasy' ,
+              'Film-Noir' , 'Horror' , 'Musical' , 'Mystery' , 'Romance' , 'Sci-Fi' ,
+              'Thriller' , 'War' , 'Western']
+    item_df = pd.read_csv( item_path,sep='|', names=col_names ,encoding='latin-1')
+    return train_df, test_df, item_df
 
 def user_item_interactions(df, min_rating, num_items, num_users):
     df = df[df['rating']>=min_rating]
@@ -39,7 +46,7 @@ def user_item_interactions(df, min_rating, num_items, num_users):
     return df_piv.to_numpy()
 
 def get_data(**kwargs):
-    train_df, test_df = read_datafiles(kwargs['train_path'], kwargs['test_path'])
+    train_df, test_df, item_df = read_datafiles(kwargs['train_path'], kwargs['test_path'], kwargs['item_path'])
 
     # split the training to its own training and validation set
     train_smalldf, validation_df = train_test_split(train_df, test_size=0.1)
@@ -52,4 +59,5 @@ def get_data(**kwargs):
     dct['test'] = user_item_interactions(test_df, mr, ni, nu)
     dct['train_small'] = user_item_interactions(train_smalldf, mr, ni, nu)
     dct['validation'] = user_item_interactions(validation_df, mr, ni, nu)
+    dct['item_features'] = item_df
     return dct

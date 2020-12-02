@@ -1,0 +1,7 @@
+{
+  "no_components": [6, 8, 10, 12],
+  "learning_schedule": ["adagrad", "adadelta"],
+  "max_sampled" : [5, 10, 15],
+  "cutoffs": [5, 10, 20],
+  "metrics_to_optimize" : ["PRECISION", "RECALL"]
+}

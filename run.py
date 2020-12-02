@@ -14,6 +14,7 @@ from analysis_userknn_cf import run_userknn_cf
 from analysis_p3alpha import run_p3alpha
 from analysis_rp3beta import run_rp3beta
 from analysis_LightFM import run_lightfm
+from analysis_LightFM_hybrid import run_lightfm_hybrid
 from report import report
 from clean import remove_results
 
@@ -24,7 +25,7 @@ def all(data):
     """
     Runs all the algorithms, given data
     """
-    algo_names = ['toppop', 'itemknncf', 'userknncf', 'p3alpha', 'rp3beta', 'lightfm']
+    algo_names = ['toppop', 'itemknncf', 'userknncf', 'p3alpha', 'rp3beta', 'lightfm', 'lightfm-hybrid']
     config_dct = {}
 
     for a in algo_names:
@@ -67,6 +68,8 @@ def algo_target(data, target):
         run_rp3beta(data, **analysis_cfg)
     elif target == 'lightfm':
         run_lightfm(data, **analysis_cfg)
+    elif target == 'lightfm-hybrid':
+        run_lightfm_hybrid(data, **analysis_cfg)
 
     # create report
     with open('config/report-params.json') as fh:
@@ -124,6 +127,8 @@ def main(targets):
     if 'lightfm' in targets:
         algo_target(data, 'lightfm')
 
+    if 'lightfm-hybrid' in targets:
+        algo_target(data, 'lightfm-hybrid')
     return
 
 if __name__ == '__main__':

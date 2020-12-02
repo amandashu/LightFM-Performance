@@ -8,6 +8,7 @@ The data used is the [Movielens 100k dataset](https://grouplens.org/datasets/mov
 See [here](http://files.grouplens.org/datasets/movielens/ml-100k-README.txt) for a detailed description of the data. We use the files:
 - `ua.base`: training data
 - `ua.test`: testing data
+- `u.item`: item features data
 
 ## Code Organization
 
@@ -54,7 +55,7 @@ On local, run this command to run all the algorithms and get the results (this a
 python run.py data-local all-algos
 ```
 
-Besides `all-algos`, you can specify which algorithms to run if you only want to get the results of certain ones. Possible targets include `toppop`, `itemknncf`, `userknncf`, `p3alpha`, `rp3beta`, and `lightfm`. The code below runs the p3alpha baseline algorithm:
+Besides `all-algos`, you can specify which algorithms to run if you only want to get the results of certain ones. Possible targets include `toppop`, `itemknncf`, `userknncf`, `p3alpha`, `rp3beta`, `lightfm`, and `lightfm-hybrid`. The code below runs the p3alpha baseline algorithm:
 ```console
 python run.py data-dsmlp p3alpha
 ```
