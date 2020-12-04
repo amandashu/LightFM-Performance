@@ -109,6 +109,7 @@ def get_data(**kwargs):
     dct['train_small'] = user_item_interactions(train_smalldf, mr, ni, nu)
     dct['validation'] = user_item_interactions(validation_df, mr, ni, nu)
     
+    print(dct['train'])
     # Load metadata features
     (id_features, id_feature_labels, genre_features_matrix, genre_feature_labels) = parse_item_data(ni, item_df, genre_df)
     (features, feature_labels) = get_features(id_features, id_feature_labels, genre_features_matrix, genre_feature_labels, ni)

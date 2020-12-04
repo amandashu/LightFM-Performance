@@ -4,6 +4,6 @@
   "item_path":"test/testdata/test_data_item.txt",
   "genre_path":"test/testdata/test_data_genre.txt",
   "min_rating": 5,
-  "num_items" : 30,
-  "num_users" : 30
+  "num_items" : 50,
+  "num_users" : 50
 }
