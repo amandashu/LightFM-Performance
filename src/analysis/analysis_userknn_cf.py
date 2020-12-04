@@ -11,8 +11,10 @@ import os
 
 def run_userknn_cf(data, metrics_to_optimize, cutoffs):
     # get data in sparse matrices
-    for key in data:
-        data[key] = csr_matrix(data[key])
+    data['train'] = csr_matrix(data['train'])
+    data['test'] = csr_matrix(data['test'])
+    data['train_small'] = csr_matrix(data['train_small'])
+    data['validation'] = csr_matrix(data['validation'])
 
     # get results of tuned baseline
     evaluator_validation = EvaluatorHoldout(data['validation'], cutoff_list=cutoffs, exclude_seen=False)

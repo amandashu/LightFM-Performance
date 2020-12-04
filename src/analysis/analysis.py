@@ -4,6 +4,7 @@ from analysis_userknn_cf import run_userknn_cf
 from analysis_p3alpha import run_p3alpha
 from analysis_rp3beta import run_rp3beta
 from analysis_LightFM import run_lightfm
+from analysis_LightFM_hybrid import run_lightfm_hybrid
 
 def run_analysis(data, config_dct):
     
@@ -30,4 +31,7 @@ def run_analysis(data, config_dct):
     # run lightfm
     print('\nRun lightfm')
     run_lightfm(data, **config_dct['lightfm'])
+    
+    print('\nRun lightfm hybrid')
+    run_lightfm_hybrid(data, **config_dct['lightfm-hybrid'])
     return None

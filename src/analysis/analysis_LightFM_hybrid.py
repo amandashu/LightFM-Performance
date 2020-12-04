@@ -1,4 +1,3 @@
-
 from lightfm import LightFM
 from lightfm.evaluation import precision_at_k
 from lightfm.evaluation import recall_at_k
@@ -7,6 +6,7 @@ from sklearn.model_selection import ParameterGrid
 import pandas as pd
 import numpy as np
 import os
+from lightfm.datasets import fetch_movielens
 
 def run_lightfm_hybrid(data, **kwargs):
     # get data in sparse matrices
@@ -22,7 +22,7 @@ def run_lightfm_hybrid(data, **kwargs):
     best_params = {}
     for g in ParameterGrid({key:val for key, val in kwargs.items() if key != 'cutoffs' and key != 'metrics_to_optimize'}):
         model = LightFM(loss='warp',**g)
-        model.fit(data['train_small'], epochs=30)
+        model.fit(data['train_small'], item_features = data['item_features'], epochs=30)
         precision = precision_at_k(model,data['validation']).mean()
 
         if precision > best_precision:
@@ -32,7 +32,7 @@ def run_lightfm_hybrid(data, **kwargs):
 
     # fit with best parameters
     model_tuned = LightFM(loss='warp',**best_params)
-    model_tuned.fit(data['train'], epochs=30)
+    model_tuned.fit(data['train'], item_features = data['item_features'], epochs=30)
 
     metrics_to_optimize = kwargs['metrics_to_optimize']
     cutoffs = kwargs['cutoffs']
@@ -44,11 +44,11 @@ def run_lightfm_hybrid(data, **kwargs):
         cutoff_metrics = {}
         if metric_to_optimize == "PRECISION":
             for cutoff in cutoffs:
-                cutoff_metrics[cutoff] = precision_at_k(model_tuned, data['test'], k=cutoff).mean()
+                cutoff_metrics[cutoff] = precision_at_k(model_tuned, data['test'], item_features=data['item_features'], k=cutoff).mean()
 
         elif metric_to_optimize == "RECALL":
             for cutoff in cutoffs:
-                cutoff_metrics[cutoff] = recall_at_k(model_tuned, data['test'], k=cutoff).mean()
+                cutoff_metrics[cutoff] = recall_at_k(model_tuned, data['test'], item_features=data['item_features'], k=cutoff).mean()
 
         metric_cols = []
         for cutoff in cutoff_metrics.keys():
@@ -59,7 +59,7 @@ def run_lightfm_hybrid(data, **kwargs):
         dfs_for_metrics.append(metric_table)
 
     combined_df = pd.concat(dfs_for_metrics, axis=1)
-    combined_df.insert(0, 'Recommender', np.array(['LightFM']))
+    combined_df.insert(0, 'Recommender', np.array(['LightFM-Hybrid']))
     print(combined_df)
 
     # add results folder if it doesn't exist
