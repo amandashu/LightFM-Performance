@@ -23,7 +23,7 @@ def run_lightfm_hybrid(data, **kwargs):
     for g in ParameterGrid({key:val for key, val in kwargs.items() if key != 'cutoffs' and key != 'metrics_to_optimize'}):
         model = LightFM(loss='warp',**g)
         model.fit(data['train_small'], item_features = data['item_features'], epochs=30)
-        precision = precision_at_k(model,data['validation']).mean()
+        precision = precision_at_k(model,data['validation'], item_features=data['item_features']).mean()
 
         if precision > best_precision:
             best_precision = precision

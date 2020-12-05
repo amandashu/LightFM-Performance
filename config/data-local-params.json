@@ -2,7 +2,6 @@
   "train_path":"data/ua.base",
   "test_path":"data/ua.test",
   "item_path":"data/u.item",
-  "genre_path": "data/u.genre",
   "min_rating": 5,
   "num_items" : 1682,
   "num_users" : 943

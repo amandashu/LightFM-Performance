@@ -21,7 +21,6 @@ def run_userknn_cf(data, metrics_to_optimize, cutoffs):
     evaluator_test = EvaluatorHoldout(data['test'], cutoff_list=cutoffs, exclude_seen=False)
     dfs_for_metrics = []
 
-    error =False
     for metric in metrics_to_optimize:
         metric_to_optimize = metric
         runParameterSearch_Collaborative_partial = partial(runParameterSearch_Collaborative,
@@ -107,7 +106,7 @@ def run_userknn_cf(data, metrics_to_optimize, cutoffs):
     # add results folder if it doesn't exist
     if not os.path.exists('results/'):
         os.makedirs('results/')
-        
+
     try:
         all_df = pd.read_csv('results/Metrics.csv')
         dfs_index = list(all_df['Recommender'].values)
