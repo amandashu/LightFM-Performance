@@ -16,6 +16,7 @@ See [here](http://files.grouplens.org/datasets/movielens/ml-100k-README.txt) for
 The `config` folder contains several json files:
 - `data-local-params.json`: contains data parameters (when running locally) that are passed into the `get_data` function in `etl.py`
 - `data-dsmlp-params.json`: contains data parameters (when on dsmlp) that are passed into the `get_data` function in `etl.py`
+- `data-test-params.json`: contains data parameters for testing data when running the `test` target
 - `report-params.json`: contains paramaters for building the `report.html`
 - all other files in the format `<algorithm name>-params.json` contain the parameters passed into their respective functions
 
@@ -23,7 +24,7 @@ The `config` folder contains several json files:
 The `src` folder contains subfolders `data`, `analysis`, `models`, and `utils`.
 
 In the `src/data` folder:
-- `etl.py`: contains the function `get_data` that reads in the MovieLens100k data and outputs training/validation/testing user-item interaction matrices
+- `etl.py`: contains the function `get_data` that reads in the MovieLens100k data and outputs training/validation/testing user-item interaction matrices and item features data
 
 In the `src/analysis` folder:
 - `analysis.py`: contains the function `run_analysis` to run the results of lightfm and baseline algorithms
@@ -42,7 +43,7 @@ The `notebook` folder contains a Jupyter Notebook file that is run when building
 The `references` folder contains our citations.
 
 #### Test
-The `test` folder contains the testing data that is utilized for the standard target `test`.
+The `test/testdata` folder contains the testing data that is utilized for the standard target `test`. This data is only used to check correctness of the pipeline.
 
 ## Run the Results
 On DSMLP, run this command to run all the algorithms and get the results:
@@ -60,7 +61,7 @@ Besides `all-algos`, you can specify which algorithms to run if you only want to
 python run.py data-dsmlp p3alpha
 ```
 
-Standard targets are also implemented. `all` will run all the algorithms and defaults to using data on DSMLP. `clean` will delete the folders that are outputted after running. `test` will run all the algorithms, using the test data (this data is not real and it used to check correctness of the pipeline).
+Standard targets are also implemented. `all` will run all the algorithms and defaults to using data on DSMLP. `clean` will delete the folders that are outputted after running. `test` will run all the algorithms, using the testing data.
 
 Running any baseline algorithm will create a folder `result_experiments`, which holds several files related to the tuning of the baseline algorithms.
 
