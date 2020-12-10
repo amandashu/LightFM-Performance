@@ -9,14 +9,14 @@ import ast
 import pandas as pd
 import os
 
-def run_p3alpha(data, metrics_to_optimize, cutoffs):
+def run_p3alpha(data, num_iterations, metrics_to_optimize, cutoffs):
     # get data in sparse matrices
-    
+
     data['train'] = csr_matrix(data['train'])
     data['test'] = csr_matrix(data['test'])
     data['train_small'] = csr_matrix(data['train_small'])
     data['validation'] = csr_matrix(data['validation'])
-    
+
     # get results of tuned baseline
     evaluator_validation = EvaluatorHoldout(data['validation'], cutoff_list=cutoffs, exclude_seen=False)
     evaluator_test = EvaluatorHoldout(data['test'], cutoff_list=cutoffs, exclude_seen=False)
@@ -33,7 +33,7 @@ def run_p3alpha(data, metrics_to_optimize, cutoffs):
                                                        parallelizeKNN = False,
                                                        allow_weighting = True,
                                                        resume_from_saved = True,
-                                                       n_cases = 35,
+                                                       n_cases = num_iterations,
                                                        n_random_starts = 5)
 
         try:
