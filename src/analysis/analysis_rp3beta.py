@@ -9,7 +9,7 @@ import ast
 import pandas as pd
 import os
 
-def run_rp3beta(data, metrics_to_optimize, cutoffs):
+def run_rp3beta(data, num_iterations, metrics_to_optimize, cutoffs):
     # get data in sparse matrices
     data['train'] = csr_matrix(data['train'])
     data['test'] = csr_matrix(data['test'])
@@ -32,7 +32,7 @@ def run_rp3beta(data, metrics_to_optimize, cutoffs):
                                                        parallelizeKNN = False,
                                                        allow_weighting = True,
                                                        resume_from_saved = True,
-                                                       n_cases = 35,
+                                                       n_cases = num_iterations,
                                                        n_random_starts = 5)
 
         try:

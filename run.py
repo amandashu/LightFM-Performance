@@ -21,7 +21,7 @@ from clean import remove_results
 import numpy as np
 import pandas as pd
 
-def all(data):
+def all(data, num_iterations=35):
     """
     Runs all the algorithms, given data
     """
@@ -32,7 +32,7 @@ def all(data):
         with open('config/' + a + '-params.json') as fh:
             analysis_cfg = json.load(fh)
         config_dct[a] = analysis_cfg
-    run_analysis(data, config_dct)
+    run_analysis(data, num_iterations, config_dct)
 
     # create report
     with open('config/report-params.json') as fh:
@@ -49,7 +49,7 @@ def data_target(target):
     data = get_data(**data_cfg)
     return data
 
-def algo_target(data, target):
+def algo_target(data, target, num_iterations=35):
     """
     Runs the model algorithm, given the algorithm target
     """
@@ -59,13 +59,13 @@ def algo_target(data, target):
     if target == 'toppop':
         run_toppop(data, **analysis_cfg)
     elif target == 'itemknncf':
-        run_itemknn_cf(data, **analysis_cfg)
+        run_itemknn_cf(data, num_iterations, **analysis_cfg)
     elif target == 'userknncf':
-        run_userknn_cf(data, **analysis_cfg)
+        run_userknn_cf(data, num_iterations, **analysis_cfg)
     elif target == 'p3alpha':
-        run_p3alpha(data, **analysis_cfg)
+        run_p3alpha(data, num_iterations, **analysis_cfg)
     elif target == 'rp3beta':
-        run_rp3beta(data, **analysis_cfg)
+        run_rp3beta(data, num_iterations, **analysis_cfg)
     elif target == 'lightfm':
         run_lightfm(data, **analysis_cfg)
     elif target == 'lightfm-hybrid':
@@ -91,7 +91,8 @@ def main(targets):
 
     if 'test' in targets:
         data = data_target('data-test')
-        all(data)
+        num_iterations = 5
+        all(data, num_iterations)
         return
 
     ### data targets ###
@@ -100,9 +101,6 @@ def main(targets):
 
     if 'data-dsmlp' in targets:
         data = data_target('data-dsmlp')
-
-    if 'data-test' in targets:
-        data = data_target('data-test')
 
     ### all analysis targets ###
     if 'all-algos' in targets:
