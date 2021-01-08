@@ -46,10 +46,6 @@ The `references` folder contains our citations.
 The `test/testdata` folder contains the testing data that is utilized for the standard target `test`. This data is only used to check correctness of the pipeline.
 
 ## Run the Results
-On DSMLP, run this command to run all the algorithms and get the results:
-```console
-python run.py data-dsmlp all-algos
-```
 
 On local, run this command to run all the algorithms and get the results (this assumes there is a folder called `data`, which contains required data files):
 ```console
@@ -58,7 +54,7 @@ python run.py data-local all-algos
 
 Besides `all-algos`, you can specify which algorithms to run if you only want to get the results of certain ones. Possible targets include `toppop`, `itemknncf`, `userknncf`, `p3alpha`, `rp3beta`, `lightfm`, and `lightfm-hybrid`. The code below runs the p3alpha baseline algorithm:
 ```console
-python run.py data-dsmlp p3alpha
+python run.py data-local p3alpha
 ```
 
 Standard targets are also implemented. `all` will run all the algorithms and defaults to using data on DSMLP. `clean` will delete the folders that are outputted after running. `test` will run all the algorithms, using the testing data.
