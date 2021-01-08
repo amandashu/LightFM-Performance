@@ -1,8 +1,0 @@
-{
-  "train_path":"/teams/DSC180A_FA20_A00/a06recommendersystems/group07_data/ua.base",
-  "test_path":"/teams/DSC180A_FA20_A00/a06recommendersystems/group07_data/ua.test",
-  "item_path":"/teams/DSC180A_FA20_A00/a06recommendersystems/group07_data/u.item",
-  "min_rating": 5,
-  "num_items" : 1682,
-  "num_users" : 943
-}

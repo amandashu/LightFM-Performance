@@ -85,7 +85,7 @@ def main(targets):
         remove_results()
 
     if 'all' in targets: # defaults to dsmlp data
-        data = data_target('data-dsmlp')
+        data = data_target('data-local')
         all(data)
         return
 
@@ -99,8 +99,8 @@ def main(targets):
     if 'data-local' in targets:
         data = data_target('data-local')
 
-    if 'data-dsmlp' in targets:
-        data = data_target('data-dsmlp')
+    # if 'data-dsmlp' in targets:
+    #     data = data_target('data-dsmlp')
 
     ### all analysis targets ###
     if 'all-algos' in targets:

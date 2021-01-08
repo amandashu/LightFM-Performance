@@ -4,6 +4,7 @@ result_experiments/
 testing/
 data/
 __pycache__
+config/data-dsmlp-params.json
 
 # Jupyter Notebook
 .ipynb_checkpoints
