@@ -2,6 +2,8 @@
 
 A comparison of LightFM's pure collaborative filtering and hybrid model performance with several tuned baseline algorithms on the MovieLens dataset.
 
+See our Medium article [here](https://amanda-shu.medium.com/lightfm-performance-7515e57f5cfe).
+
 ### Authors
 - Amanda Shu
 - Sarat Sreepathy
